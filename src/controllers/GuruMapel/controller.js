@@ -8,6 +8,10 @@ const _ = require('lodash')
 const MainMiddleware = require('../../middlewares/usermiddleware')
 require('dotenv').config()
 
+routes.get('/', (req, res) => {
+  res.send('deploy success')
+})
+
 routes.get('/guru/me', MainMiddleware.EnsureTokenPublic, async (req, res) => {
   const dbGuru = req.user
   const data = await guruMapel.findOne({ _id: dbGuru.id }).populate('EmbedLink')

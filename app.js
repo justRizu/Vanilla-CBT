@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const routes = require('./routes/v1')
+const routes = require('./src/routes/v1')
 const mongoose = require('mongoose')
 const logger = require('morgan')
 require('dotenv').config()
