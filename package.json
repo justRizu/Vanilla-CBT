@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "config": "^3.3.8",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.7.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20",
+    "yup": "^0.32.11"
+  },
+  "name": "Vanilla CBT",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "tefa rpl",
+  "license": "copyright tefa 2022",
+  "description": "examp app or we called as Vanilla CBT for smk yadika soreang"
+}
