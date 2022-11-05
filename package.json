@@ -14,7 +14,6 @@
   "name": "Vanilla CBT",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "nodemon src/app.js"
   },
