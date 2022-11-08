@@ -18,12 +18,12 @@ routes.post(
 
 routes.get('/embed/link/me', async (req, res) => {
   const guru = MainMiddleware.EnsureTokenPublic
-  const data = await link.find({ guruMapel: guru.id }).select('_id, embedLink')
+  const data = await link.find({ guruMapel: guru.id })
   const total = data.length
   res.status(200).json({ Message: 'success', total, data })
 })
 
-routes.get('/embed/link/all', async (req, res) => {
+routes.get('/embed/link', async (req, res) => {
   const data = await link
     .find()
     .populate('GuruMapel', '_id, nama')
@@ -36,4 +36,33 @@ routes.get('/embed/link/all', async (req, res) => {
     .catch((err) => {
       if (err) return res.status(500).json({ Message: err })
     })
+})
+
+routes.get('/embed/link/:id', async (req, res) => {
+  const { id } = req.params
+  const data = await link.findById(id)
+  if (!data) {
+    return res.status(404).json({ Message: 'data not found' })
+  }
+  res.status(200).json({ Message: 'success', data })
+})
+
+routes.put('/embed/link/:id', async (req, res) => {
+  const { id } = req.params
+  const { embedLink } = req.body
+  const findEmbedLink = await link.findById(id)
+  if (!findEmbedLink) {
+    return res.status(404).json({ Message: 'data not found' })
+  }
+  const data = await link.findByIdAndUpdate(id, { embedLink })
+  res.status(200).json({ Message: 'data berhasil diperbarui' })
+})
+
+routes.delete('/embed/link/:id', async (req, res) => {
+  const { id } = req.params
+  const data = await link.findByIdAndDelete(id)
+  if (!data) {
+    return res.status(404).json({ Message: 'data not found' })
+  }
+  res.status(200).json({ Message: 'data berhasil di hapus' })
 })

@@ -14,8 +14,27 @@ routes.get('/', (req, res) => {
 
 routes.get('/guru/me', MainMiddleware.EnsureTokenPublic, async (req, res) => {
   const dbGuru = req.user
-  const data = await guruMapel.findOne({ _id: dbGuru.id }).populate('EmbedLink')
+  const data = await guruMapel.findOne({ _id: dbGuru.id })
   res.status(200).json({ Message: 'success', data })
+})
+
+routes.put('/guru/me', MainMiddleware.EnsureTokenPublic, async (req, res) => {
+  const dbGuru = req.user
+  const { nama, username, password } = req.body
+  let hashedPassword
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, 10)
+  }
+  const data = await guruMapel.findByIdAndUpdate(
+    { _id: dbGuru.id },
+    {
+      nama,
+      username,
+      password,
+      hashedPassword,
+    }
+  )
+  res.status(200).json({ Message: 'data berhasil di perbarui' })
 })
 
 routes.post(
@@ -41,6 +60,55 @@ routes.post(
     res.status(202).json({ Message: 'berhasil menambahkan guru baru' })
   }
 )
+
+routes.get('/guru/mapel', async (req, res) => {
+  const data = await guruMapel.find()
+  const total = data.length
+  res.status(200).json({ Message: 'success', total, data })
+})
+
+routes.get('/guru/:id', async (req, res) => {
+  const { id } = req.params
+  const data = await guruMapel.findById(id)
+  if (!data) {
+    return res.status(404).json({ Message: 'data not found' })
+  }
+  res.status(200).json({ Message: 'success', data })
+})
+
+routes.put(
+  '/guru/:id',
+  MainMiddleware.EnsureTokenOperator,
+  async (req, res) => {
+    const { id } = req.params
+    const { nama, username, password } = req.body
+    let hashedPassword
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10)
+    }
+    const findGuru = await guruMapel.findById(id)
+    if (!findGuru) {
+      return res.status(404).json({ Message: 'data not found' })
+    }
+    const data = await guruMapel.findByIdAndUpdate(id, {
+      nama,
+      username,
+      password,
+      hashedPassword,
+    })
+    res.status(200).json({ Message: 'data berhasil di perbarui' })
+  }
+)
+
+routes.delete('/guru/:id', async (req, res) => {
+  const { id } = req.params
+  const findGuru = await guruMapel.findById(id)
+  if (!findGuru) {
+    return res.status(404).json({ Message: 'data not found' })
+  }
+  const data = await guruMapel.findByIdAndDelete(id)
+  res.json({ Message: 'data berhasil dihapus' })
+})
 
 routes.post('/guru/login', validation(schema.loginSchema), async (req, res) => {
   const { username, password } = req.body

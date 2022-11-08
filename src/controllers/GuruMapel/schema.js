@@ -8,11 +8,6 @@ const registerSchema = yup.object({
     .required('password harus di isi!')
     .min(8, 'password minimal 8 karakter')
     .oneOf([yup.ref('password')], 'password tidak sama!'),
-  confirmPassword: yup
-    .string()
-    .required('confirm password harus di isi!')
-    .min(8, 'password minimal 8 karakter')
-    .oneOf([yup.ref('password')], 'password tidak sama!'),
 })
 
 const loginSchema = yup.object({

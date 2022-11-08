@@ -15,18 +15,18 @@ const schema = mongoose.Schema({
     type: Boolean,
   },
 })
-const hashPassword = bcrypt.hashSync('operator123', 10)
 const operatorModel = mongoose.model('operator', schema)
+// const hashPassword = bcrypt.hashSync('operator123', 10)
 
-const defaultOperator = new operatorModel({
-  username: 'operator',
-  password: 'operator123',
-  hashedPassword: hashPassword,
-  isOperator: true,
-})
+// const defaultOperator = new operatorModel({
+//   username: 'operator',
+//   password: 'operator123',
+//   hashedPassword: hashPassword,
+//   isOperator: true,
+// })
 
-defaultOperator.save((err) => {
-  if (err) return console.log('Message: ' + err)
-})
+// defaultOperator.save((err) => {
+//   if (err) return console.log('Message: ' + err)
+// })
 
 module.exports = operatorModel
