@@ -5,9 +5,21 @@ const schema = mongoose.Schema(
     embedLink: {
       type: String,
     },
-    GuruMapel: {
+    mapel: {
+      type: mongoose.Types.ObjectId,
+      ref: 'mapel',
+    },
+    guruMapel: {
       type: mongoose.Types.ObjectId,
       ref: 'GuruMapel',
+    },
+    tingkatan: {
+      type: mongoose.Types.ObjectId,
+      ref: 'tingkatan',
+    },
+    jurusan: {
+      type: mongoose.Types.ObjectId,
+      ref: 'jurusan',
     },
   },
   { timestamps: true }

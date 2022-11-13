@@ -42,7 +42,7 @@ routes.post(
   MainMiddleware.EnsureTokenOperator,
   validation(schema.registerSchema),
   async (req, res) => {
-    const { nama, username, password } = req.body
+    const { nama, username, password, confirmPassword } = req.body
     const duplicateGuru = await guruMapel.findOne({ nama, username })
     if (duplicateGuru) {
       return res
