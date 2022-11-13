@@ -39,11 +39,15 @@ routes.get('/tingkatan/:id', async (req, res) => {
   res.status(200).json({ Message: 'success', data })
 })
 
-routes.delete('/tingkatan/:id', async (req, res) => {
-  const { id } = req.params
-  const data = await grade.findByIdAndDelete(id)
-  if (!data) {
-    return res.status(404).json({ Message: 'data not found' })
+routes.delete(
+  '/tingkatan/:id',
+  MainMiddleware.EnsureTokenOperator,
+  async (req, res) => {
+    const { id } = req.params
+    const data = await grade.findByIdAndDelete(id)
+    if (!data) {
+      return res.status(404).json({ Message: 'data not found' })
+    }
+    res.status(200).json({ Message: 'data berhasil di hapus' })
   }
-  res.status(200).json({ Message: 'data berhasil di hapus' })
-})
+)

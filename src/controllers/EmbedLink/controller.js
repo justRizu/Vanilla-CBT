@@ -1,10 +1,13 @@
 const routes = require('../../routes/v1')
 const link = require('../../databases/models/embedLink')
 const MainMiddleware = require('../../middlewares/usermiddleware')
+const schema = require('./schema')
+const validation = require('../../middlewares/validation')
 
 routes.post(
   '/embed/link',
   MainMiddleware.EnsureTokenPublic,
+  validation(schema.registerSchema),
   async (req, res) => {
     const guruMapel = req.user
     const { mapel, embedLink, tingkatan, jurusan } = req.body
@@ -27,6 +30,7 @@ routes.get('/embed/link', async (req, res) => {
   const data = await link
     .find()
     .populate([
+      { path: 'mapel', select: '_id, namaMapel' },
       { path: 'guruMapel', select: '_id, nama' },
       { path: 'tingkatan', select: '_id, tingkatan' },
       { path: 'jurusan', select: '_id, jurusan' },
@@ -47,6 +51,7 @@ routes.get('/embed/link/:id', async (req, res) => {
   const data = await link
     .findById(id)
     .populate([
+      { path: 'mapel', select: '_id, namaMapel' },
       { path: 'guruMapel', select: '_id, nama' },
       { path: 'tingkatan', select: '_id, tingkatan' },
       { path: 'jurusan', select: '_id, jurusan' },
@@ -62,22 +67,30 @@ routes.get('/embed/link/:id', async (req, res) => {
     })
 })
 
-routes.put('/embed/link/:id', async (req, res) => {
-  const { id } = req.params
-  const { embedLink } = req.body
-  const findEmbedLink = await link.findById(id)
-  if (!findEmbedLink) {
-    return res.status(404).json({ Message: 'data not found' })
+routes.put(
+  '/embed/link/:id',
+  MainMiddleware.EnsureTokenPublic,
+  async (req, res) => {
+    const { id } = req.params
+    const { embedLink } = req.body
+    const findEmbedLink = await link.findById(id)
+    if (!findEmbedLink) {
+      return res.status(404).json({ Message: 'data not found' })
+    }
+    const data = await link.findByIdAndUpdate(id, { embedLink })
+    res.status(200).json({ Message: 'data berhasil diperbarui' })
   }
-  const data = await link.findByIdAndUpdate(id, { embedLink })
-  res.status(200).json({ Message: 'data berhasil diperbarui' })
-})
+)
 
-routes.delete('/embed/link/:id', async (req, res) => {
-  const { id } = req.params
-  const data = await link.findByIdAndDelete(id)
-  if (!data) {
-    return res.status(404).json({ Message: 'data not found' })
+routes.delete(
+  '/embed/link/:id',
+  MainMiddleware.EnsureTokenPublic,
+  async (req, res) => {
+    const { id } = req.params
+    const data = await link.findByIdAndDelete(id)
+    if (!data) {
+      return res.status(404).json({ Message: 'data not found' })
+    }
+    res.status(200).json({ Message: 'data berhasil di hapus' })
   }
-  res.status(200).json({ Message: 'data berhasil di hapus' })
-})
+)

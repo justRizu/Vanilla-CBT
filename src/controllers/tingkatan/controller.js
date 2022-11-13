@@ -40,11 +40,15 @@ routes.get('/jurusan/:id', async (req, res) => {
   res.status(200).json({ Message: 'success', data })
 })
 
-routes.delete('/jurusan/:id', async (req, res) => {
-  const { id } = req.params
-  const data = await major.findByIdAndDelete(id)
-  if (!data) {
-    return res.status(404).json({ Message: 'data not found' })
+routes.delete(
+  '/jurusan/:id',
+  MainMiddleware.EnsureTokenOperator,
+  async (req, res) => {
+    const { id } = req.params
+    const data = await major.findByIdAndDelete(id)
+    if (!data) {
+      return res.status(404).json({ Message: 'data not found' })
+    }
+    res.status(200).json({ Message: 'data berhasil di hapus' })
   }
-  res.status(200).json({ Message: 'data berhasil di hapus' })
-})
+)
