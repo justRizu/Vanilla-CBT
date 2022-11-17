@@ -11,6 +11,7 @@
     "nodemon": "^2.0.20",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.6.0",
+    "vercel": "^28.5.3",
     "yup": "^0.32.11"
   },
   "name": "Vanilla CBT",
