@@ -1,6 +1,6 @@
 {
   "version": 2,
   "name": "vanilla cbt",
-  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(routes/.*)", "dest": "/" }]
+  "builds": [{ "src": "src/app.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "src/routes/v1.js", "dest": "src/app.js" }]
 }
